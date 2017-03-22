@@ -27,7 +27,7 @@ ex.validation = {
 ex.func = function(params, callback) {
   users.login(params.emailAddress, params.password, function(response) {
     if (!response) callback({error: 'DATA_DOESNT_MATCH_AN_EXISTING_ACCOUNT'});
-    else callback({loginToken: jwt.sign({loginToken: functions.randomString(32)}, configs.key)});
+    else callback({loginToken: jwt.sign({loginToken: functions.randomString(32), userId: response.id, role: response.role}, configs.key), userId: response.id, role: response.role});
   });
 };
 

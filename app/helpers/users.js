@@ -14,8 +14,12 @@ users.create = function(emailAddress, password, callback) {
 };
 
 users.login = function (emailAddress, password, callback) {
-  connection.query('SELECT password, id FROM users WHERE emailAddress = ?', [emailAddress], function(error, rows, fields) {
-    callback(!!(!error && rows.length && passwordHash.verify(password, rows[0].password)));
+  connection.query('SELECT password, id, role FROM users WHERE emailAddress = ?', [emailAddress], function(error, rows, fields) {
+    if (!error && rows.length && passwordHash.verify(password, rows[0].password)) {
+      callback({id: rows[0].id, role: rows[0].role});
+    } else {
+      callback(false);
+    }
   });
 };
 

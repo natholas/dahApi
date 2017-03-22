@@ -6,7 +6,8 @@ var configs = require('./configs');
 var services = {
   bootloader: require('./services/bootloader'),
   signup: require('./services/signup'),
-  login: require('./services/login')
+  login: require('./services/login'),
+  getentrepreneurs: require('./services/getentrepreneurs')
 };
 
 
