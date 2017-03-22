@@ -8,17 +8,17 @@ var connection = mysql.createPool({
   database: 'nodeDah'
 });
 
-connection.query = function (query, callback) {
+connection.query = function (query, params, callback) {
   connection.getConnection(function(error, conn) {
     if (error) {
       console.log(error);
       conn.release();
     }
-    else conn.query(query, function(error, rows, fields) {
+    else conn.query(query, params, function(error, rows, fields) {
       callback(error, rows, fields);
       conn.release();
     });
   });
-}
+};
 
 module.exports = connection;

@@ -1,5 +1,3 @@
-module.exports = function() {
-  return {
-    "key": "h454ishdf9sadfgsdklfjsdhkf"
-  }
-}
+module.exports = {
+  "key": "h454ishdf9sadfgsdklfjsdhkf"
+};
