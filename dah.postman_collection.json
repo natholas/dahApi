@@ -1,0 +1,71 @@
+{
+	"variables": [],
+	"info": {
+		"name": "dah",
+		"_postman_id": "f3df3d4f-e9af-1574-486a-7f9bfce23e54",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "bootloader",
+			"request": {
+				"url": "http://localhost:3000/bootloader",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "signup",
+			"request": {
+				"url": "http://localhost:3000/signup",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"visitorToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ2aXNpdG9yVG9rZW4iOiJJUkZEaUFtbGY0bDJnenA3bkpBRElTMVRXVldxWVpYRyIsImlhdCI6MTQ5MDIxNDkzN30.162yW3o65BHTw8X96J1UOgCbh6zhWNsRDUkygOi2mw4\",\n\t\"emailAddress\": \"info@nathanfelix.com\",\n\t\"password\": \"tigertiger\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "login",
+			"request": {
+				"url": "http://localhost:3000/login",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"visitorToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ2aXNpdG9yVG9rZW4iOiJJUkZEaUFtbGY0bDJnenA3bkpBRElTMVRXVldxWVpYRyIsImlhdCI6MTQ5MDIxNDkzN30.162yW3o65BHTw8X96J1UOgCbh6zhWNsRDUkygOi2mw4\",\n\t\"emailAddress\": \"info@nathanfelix.com\",\n\t\"password\": \"tigertiger\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}
