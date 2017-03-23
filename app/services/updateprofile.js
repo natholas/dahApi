@@ -1,5 +1,6 @@
 var jwt = require('jsonwebtoken');
 var configs = require('../configs');
+var passwordHash = require('password-hash');
 var users = require('../helpers/users');
 var functions = require('../helpers/functions');
 
@@ -25,6 +26,11 @@ ex.validation = {
       minLength: 5,
       maxLength: 20
     },
+    password: {
+      type: 'string',
+      minLength: 5,
+      maxLength: 128
+    },
     publicStatus: {
       type: 'string',
       enum: ['PUBLIC', 'PRIVATE']
@@ -39,6 +45,9 @@ ex.func = function(params, callback) {
     if (i == 'visitorToken' || i == 'loginToken') continue;
     if (ex.validation.properties[i]) changes[i] = params[i];
   }
+
+  if (changes.password) changes.password = passwordHash.generate(changes.password);
+
   if (!objSize(changes)) callback({error: 'NOTHING_TO_CHANGE'});
   else users.update(jwt.verify(params.loginToken, configs.key).userId, changes, function(response) {
     if (!response) callback({error: 'UPDATE_FAILED'});
