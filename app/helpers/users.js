@@ -26,6 +26,7 @@ users.login = function (emailAddress, password, callback) {
 users.update = function (userId, changes, callback) {
   var string = "";
   var variables = [];
+
   for (var i in changes) {
     string += i + ' = ?, ';
     variables.push(changes[i]);

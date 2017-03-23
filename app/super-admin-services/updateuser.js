@@ -1,5 +1,6 @@
 var jwt = require('jsonwebtoken');
 var configs = require('../configs');
+var passwordHash = require('password-hash');
 var users = require('../helpers/users');
 var functions = require('../helpers/functions');
 
@@ -23,10 +24,23 @@ ex.validation = {
       maxLength: 64,
       pattern: '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,10}$'
     },
+    role: {
+      type: 'string',
+      enum: ['USER', 'ADMIN', 'SUPER']
+    },
+    status: {
+      type: 'string',
+      enum: ['ACTIVE', 'BLOCKED']
+    },
     nickname: {
       type: 'string',
       minLength: 5,
       maxLength: 20
+    },
+    password: {
+      type: 'string',
+      minLength: 5,
+      maxLength: 128
     },
     publicStatus: {
       type: 'string',
@@ -42,6 +56,9 @@ ex.func = function(params, callback) {
     if (i == 'visitorToken' || i == 'loginToken') continue;
     if (ex.validation.properties[i]) changes[i] = params[i];
   }
+
+  if (changes.password) changes.password = passwordHash.generate(changes.password);
+
   if (!objSize(changes)) callback({error: 'NOTHING_TO_CHANGE'});
   else users.update(params.userId, changes, function(response) {
     if (!response) callback({error: 'UPDATE_FAILED'});
