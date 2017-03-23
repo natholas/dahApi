@@ -6,13 +6,7 @@ var app = express();
 
 app.use(bodyParser.json());
 
-app.post('/end/*', function(req, res) {
-  request(req, function(response) {
-    res.send(response);
-  });
-});
-
-app.post('/adm/*', function(req, res) {
+app.post('/*', function(req, res) {
   request(req, function(response) {
     res.send(response);
   });

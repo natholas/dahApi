@@ -6,6 +6,7 @@ var services = {
   bootloader: require('./services/bootloader'),
   signup: require('./services/signup'),
   login: require('./services/login'),
+  updateprofile: require('./services/updateprofile'),
   getentrepreneurs: require('./services/getentrepreneurs'),
   getentrepreneur: require('./services/getentrepreneur')
 };
@@ -15,6 +16,10 @@ var adminServices = {
   updateentrepreneur: require('./admin-services/updateentrepreneur')
 };
 
+var superAdminServices = {
+  updateuser: require('./super-admin-services/updateuser')
+};
+
 
 var v = new Validator();
 
@@ -22,8 +27,21 @@ module.exports = function(req, callback) {
 
   var service = req.originalUrl.substring(5);
   var params = req.body;
-  var mode = req.originalUrl.substring(1,4) == 'end' ? 'CLIENT' : 'ADMIN';
-  var srvs = mode == 'CLIENT' ? services : adminServices;
+  var mode, srvs;
+
+  switch(req.originalUrl.substring(1,4)) {
+    case 'adm':
+      mode = 'ADMIN';
+      srvs = adminServices;
+      break;
+    case 'sdm':
+      mode = 'SUPER';
+      srvs = superAdminServices;
+      break;
+    default:
+      mode = 'CLIENT';
+      srvs = services;
+  }
 
   var response = {};
 
@@ -61,7 +79,8 @@ module.exports = function(req, callback) {
       try {
         var decoded = jwt.verify(params.loginToken, configs.key);
         if (!decoded.loginToken) response.error = 'LOGIN_TOKEN_NOT_VALID';
-        if (mode == 'ADMIN' && decoded.role != 'ADMIN') response.error = 'PERMISION_DENIED';
+        if (mode == 'ADMIN' && decoded.role != 'ADMIN' && decoded.role != 'SUPER') response.error = 'PERMISION_DENIED';
+        else if (mode == 'SUPER' && decoded.role != 'SUPER') response.error = 'PERMISION_DENIED';
       } catch (err) {
         response.error = 'LOGIN_TOKEN_NOT_VALID';
       }

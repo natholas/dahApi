@@ -8,3 +8,9 @@ module.exports = {
     return text;
   }
 };
+
+objSize = function(obj) {
+  var size = 0, key;
+  for (i in obj) size++;
+  return size;
+};

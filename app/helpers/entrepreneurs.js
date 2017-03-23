@@ -21,8 +21,8 @@ entrepreneurs.getById = function (id, callback) {
 
 entrepreneurs.add = function (name, description, dob, city, countryId, amountNeeded, status, teamId, callback) {
   connection.query(
-    'INSERT INTO entrepreneur (name, description, dob, city, countryId, amountNeeded, status, teamId) VALUES (?,?,?,?,?,?,?)',
-    [name, description, dob, city, countryId, status, teamId], function(error, rows, fields) {
+    'INSERT INTO entrepreneurs (name, description, dob, city, countryId, amountNeeded, status, teamId) VALUES (?,?,?,?,?,?,?,?)',
+    [name, description, dob, city, countryId, amountNeeded, status, teamId], function(error, rows, fields) {
     if (error) {
       console.log(error);
       callback(false);
