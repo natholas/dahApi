@@ -1,13 +1,13 @@
 var jwt = require('jsonwebtoken');
 var Validator = require('jsonschema').Validator;
 var configs = require('./configs');
-// var services = require('./service-holder');
 
 var services = {
   bootloader: require('./services/bootloader'),
   signup: require('./services/signup'),
   login: require('./services/login'),
-  getentrepreneurs: require('./services/getentrepreneurs')
+  getentrepreneurs: require('./services/getentrepreneurs'),
+  getentrepreneur: require('./services/getentrepreneur')
 };
 
 
@@ -34,7 +34,7 @@ module.exports = function(req, callback) {
 
   // Checking if there should be a visitorToken and if it is valid
   if (!response.error) {
-    if (services[service].validation.parameters && services[service].validation.parameters.visitorToken) {
+    if (services[service].validation.properties && services[service].validation.properties.visitorToken && params.visitorToken) {
 
       // Visitor token is needed and present. Checking if it is valid
       try {
@@ -48,7 +48,7 @@ module.exports = function(req, callback) {
 
   // Checking if there should be a login token and if it is valid
   if (!response.error) {
-    if (services[service].validation.parameters && services[service].validation.parameters.loginToken) {
+    if (services[service].validation.properties && services[service].validation.properties.loginToken && params.loginToken) {
 
       // login token is needed and present. Checking if it is valid
       try {

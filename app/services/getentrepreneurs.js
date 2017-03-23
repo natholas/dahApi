@@ -24,11 +24,10 @@ ex.validation = {
 
 ex.func = function(params, callback) {
   var role = jwt.verify(params.loginToken, configs.key).role;
-  var status = 'DRAFT';
-  if (role == 'ADMIN') status = params.status;
-
+  var status = 'LIVE';
+  if (role == 'ADMIN' && params.status) status = params.status;
   entrepreneurs.getAllByStatus(status, function(response) {
-    callback(response);
+    callback({status: status, entrepreneurs: response});
   });
 };
 

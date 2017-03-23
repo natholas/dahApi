@@ -16,7 +16,7 @@ users.create = function(emailAddress, password, callback) {
 users.login = function (emailAddress, password, callback) {
   connection.query('SELECT userId, password, role FROM users WHERE emailAddress = ?', [emailAddress], function(error, rows, fields) {
     if (!error && rows.length && passwordHash.verify(password, rows[0].password)) {
-      callback({id: rows[0].id, role: rows[0].role});
+      callback({userId: rows[0].userId, role: rows[0].role});
     } else {
       callback(false);
     }
