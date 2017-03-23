@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 23, 2017 at 10:43 AM
+-- Generation Time: Mar 23, 2017 at 11:03 AM
 -- Server version: 10.1.16-MariaDB
 -- PHP Version: 7.0.9
 
@@ -66,12 +66,14 @@ CREATE TABLE `entrepreneur` (
 ,`dob` date
 ,`city` varchar(45)
 ,`countryId` int(11)
+,`amountNeeded` float
 ,`status` enum('DRAFT','LIVE','ENDED')
 ,`teamId` int(11)
 ,`createdTime` datetime
 ,`fundedTime` datetime
 ,`teamName` varchar(45)
 ,`countryName` varchar(45)
+,`totalInvested` double
 );
 
 -- --------------------------------------------------------
@@ -87,6 +89,7 @@ CREATE TABLE `entrepreneurs` (
   `dob` date DEFAULT NULL,
   `city` varchar(45) DEFAULT NULL,
   `countryId` int(11) DEFAULT NULL,
+  `amountNeeded` float DEFAULT NULL,
   `status` enum('DRAFT','LIVE','ENDED') DEFAULT NULL,
   `teamId` int(11) DEFAULT NULL,
   `createdTime` datetime DEFAULT CURRENT_TIMESTAMP,
@@ -97,8 +100,8 @@ CREATE TABLE `entrepreneurs` (
 -- Dumping data for table `entrepreneurs`
 --
 
-INSERT INTO `entrepreneurs` (`entrepreneurId`, `name`, `description`, `dob`, `city`, `countryId`, `status`, `teamId`, `createdTime`, `fundedTime`) VALUES
-(1, 'Silas', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer ultricies porttitor molestie. Duis pulvinar mi ut nisi finibus rutrum. Sed vel rhoncus magna. Curabitur id turpis sit amet tortor commodo mollis viverra in quam. Suspendisse ultricies lacus dolor, a luctus sem laoreet in. Nam in vulputate nunc, quis pulvinar diam. Suspendisse eu velit nisl. Nulla venenatis lacus ac eleifend mollis. Etiam non gravida turpis. Phasellus molestie, orci et consectetur ornare, elit elit tempus dui, at volutpat metus erat eget purus. Duis ornare aliquam nunc, ac sollicitudin purus suscipit in. Sed nec dolor sit amet nulla imperdiet mattis ut vel mauris. Aliquam accumsan lorem id accumsan consequat.', '2010-10-23', 'London', 1, 'LIVE', 1, '2017-03-23 00:00:00', NULL);
+INSERT INTO `entrepreneurs` (`entrepreneurId`, `name`, `description`, `dob`, `city`, `countryId`, `amountNeeded`, `status`, `teamId`, `createdTime`, `fundedTime`) VALUES
+(1, 'Dino Parrella', 'This guy..', '2017-03-22', 'London', 1, 1000, 'DRAFT', 1, '2017-03-23 00:00:00', NULL);
 
 -- --------------------------------------------------------
 
@@ -116,6 +119,14 @@ CREATE TABLE `orders` (
   `status` enum('INIT','AUTHORIZED','DONE','CANCELLED') DEFAULT NULL,
   `message` longtext
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `orders`
+--
+
+INSERT INTO `orders` (`orderId`, `userId`, `entrepreneurId`, `amount`, `donationAmout`, `orderTime`, `status`, `message`) VALUES
+(1, 1, 1, 300, 0, NULL, 'DONE', NULL),
+(2, 1, 1, 200, 10, NULL, 'CANCELLED', NULL);
 
 -- --------------------------------------------------------
 
@@ -202,7 +213,7 @@ INSERT INTO `users` (`userId`, `emailAddress`, `nickname`, `password`, `role`, `
 --
 DROP TABLE IF EXISTS `entrepreneur`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `entrepreneur`  AS  select `entrepreneurs`.`entrepreneurId` AS `entrepreneurId`,`entrepreneurs`.`name` AS `name`,`entrepreneurs`.`description` AS `description`,`entrepreneurs`.`dob` AS `dob`,`entrepreneurs`.`city` AS `city`,`entrepreneurs`.`countryId` AS `countryId`,`entrepreneurs`.`status` AS `status`,`entrepreneurs`.`teamId` AS `teamId`,`entrepreneurs`.`createdTime` AS `createdTime`,`entrepreneurs`.`fundedTime` AS `fundedTime`,`teams`.`name` AS `teamName`,`countries`.`countryName` AS `countryName` from ((`entrepreneurs` join `teams` on((`teams`.`teamId` = `entrepreneurs`.`teamId`))) join `countries` on((`countries`.`countryId` = `entrepreneurs`.`countryId`))) ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `entrepreneur`  AS  select `entrepreneurs`.`entrepreneurId` AS `entrepreneurId`,`entrepreneurs`.`name` AS `name`,`entrepreneurs`.`description` AS `description`,`entrepreneurs`.`dob` AS `dob`,`entrepreneurs`.`city` AS `city`,`entrepreneurs`.`countryId` AS `countryId`,`entrepreneurs`.`amountNeeded` AS `amountNeeded`,`entrepreneurs`.`status` AS `status`,`entrepreneurs`.`teamId` AS `teamId`,`entrepreneurs`.`createdTime` AS `createdTime`,`entrepreneurs`.`fundedTime` AS `fundedTime`,`teams`.`name` AS `teamName`,`countries`.`countryName` AS `countryName`,sum(`orders`.`amount`) AS `totalInvested` from (((`entrepreneurs` join `teams` on((`teams`.`teamId` = `entrepreneurs`.`teamId`))) join `countries` on((`countries`.`countryId` = `entrepreneurs`.`countryId`))) left join `orders` on(((`orders`.`entrepreneurId` = `entrepreneurs`.`entrepreneurId`) and (`orders`.`status` = 'DONE')))) ;
 
 --
 -- Indexes for dumped tables
@@ -300,7 +311,7 @@ ALTER TABLE `entrepreneurs`
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `orderId` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `orderId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT for table `saferpaylog`
 --

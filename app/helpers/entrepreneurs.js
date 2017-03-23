@@ -19,10 +19,21 @@ entrepreneurs.getById = function (id, callback) {
   });
 };
 
-entrepreneurs.add = function (name, description, dob, city, countryId, status, teamId, callback) {
+entrepreneurs.add = function (name, description, dob, city, countryId, amountNeeded, status, teamId, callback) {
   connection.query(
-    'INSERT INTO entrepreneur (name, description, dob, city, countryId, status, teamId) VALUES (?,?,?,?,?,?,?)',
+    'INSERT INTO entrepreneur (name, description, dob, city, countryId, amountNeeded, status, teamId) VALUES (?,?,?,?,?,?,?)',
     [name, description, dob, city, countryId, status, teamId], function(error, rows, fields) {
+    if (error) {
+      console.log(error);
+      callback(false);
+    } else callback(rows);
+  });
+};
+
+entrepreneurs.update = function (entrepreneurId, name, description, dob, city, countryId, amountNeeded, status, teamId, callback) {
+  connection.query(
+    'UPDATE entrepreneur SET name = ?, description = ?, dob = ?, city = ?, countryId = ?, amountNeeded = ?, status = ?, teamId = ? WHERE entrepreneurId = ?',
+    [name, description, dob, city, countryId, amountNeeded, status, teamId, entrepreneurId], function(error, rows, fields) {
     if (error) {
       console.log(error);
       callback(false);

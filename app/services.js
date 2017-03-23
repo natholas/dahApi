@@ -11,7 +11,8 @@ var services = {
 };
 
 var adminServices = {
-  addentrepreneur: require('./admin-services/addentrepreneur')
+  addentrepreneur: require('./admin-services/addentrepreneur'),
+  updateentrepreneur: require('./admin-services/updateentrepreneur')
 };
 
 

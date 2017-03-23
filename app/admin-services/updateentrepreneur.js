@@ -10,6 +10,9 @@ ex.validation = {
     loginToken: {
       type: 'string'
     },
+    entrepreneurId: {
+      type: 'integer'
+    },
     name: {
       type: 'string'
     },
@@ -40,9 +43,9 @@ ex.validation = {
 };
 
 ex.func = function(params, callback) {
-  entrepreneurs.add(params.name, params.description, params.dob, params.city, params.countryId, params.amountNeeded, params.status, params.teamId, function(response) {
-    if (!response) callback({error: 'FAILED_TO_INSERT'});
-    else callback({entrepreneurId: response.insertId});
+  entrepreneurs.update(params.entrepreneurId, params.name, params.description, params.dob, params.city, params.countryId, params.amountNeeded, params.status, params.teamId, function(response) {
+    if (!response || !response.affectedRows) callback({error: 'FAILED_TO_UPDATE'});
+    else callback({status: 1});
   });
 };
 
