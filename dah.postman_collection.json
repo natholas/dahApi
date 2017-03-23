@@ -10,7 +10,7 @@
 		{
 			"name": "bootloader",
 			"request": {
-				"url": "http://localhost:3000/bootloader",
+				"url": "http://localhost:3000/end/bootloader",
 				"method": "POST",
 				"header": [
 					{
@@ -30,7 +30,7 @@
 		{
 			"name": "signup",
 			"request": {
-				"url": "http://localhost:3000/signup",
+				"url": "http://localhost:3000/end/signup",
 				"method": "POST",
 				"header": [
 					{
@@ -50,7 +50,7 @@
 		{
 			"name": "login",
 			"request": {
-				"url": "http://localhost:3000/login",
+				"url": "http://localhost:3000/end/login",
 				"method": "POST",
 				"header": [
 					{
@@ -62,6 +62,66 @@
 				"body": {
 					"mode": "raw",
 					"raw": "{\n\t\"visitorToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ2aXNpdG9yVG9rZW4iOiJJUkZEaUFtbGY0bDJnenA3bkpBRElTMVRXVldxWVpYRyIsImlhdCI6MTQ5MDIxNDkzN30.162yW3o65BHTw8X96J1UOgCbh6zhWNsRDUkygOi2mw4\",\n\t\"emailAddress\": \"info@nathanfelix.com\",\n\t\"password\": \"tigertiger\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "getentrepreneurs",
+			"request": {
+				"url": "http://localhost:3000/end/getentrepreneurs",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"visitorToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ2aXNpdG9yVG9rZW4iOiJJUkZEaUFtbGY0bDJnenA3bkpBRElTMVRXVldxWVpYRyIsImlhdCI6MTQ5MDIxNDkzN30.162yW3o65BHTw8X96J1UOgCbh6zhWNsRDUkygOi2mw4\",\n\t\"loginToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb2dpblRva2VuIjoiS09jbXIxQW12WUlrbG9ncjlWOVRha1M5VkltbWJPRkQiLCJ1c2VySWQiOjEsInJvbGUiOiJBRE1JTiIsImlhdCI6MTQ5MDI2MTI1NH0.Z3v_3hbBR1v2ChRhcOe2sLqL3FmfEALosImMVwEXxek\",\n\t\"status\": \"DRAFT\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "getentrepreneur",
+			"request": {
+				"url": "http://localhost:3000/end/getentrepreneur",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"visitorToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ2aXNpdG9yVG9rZW4iOiJJUkZEaUFtbGY0bDJnenA3bkpBRElTMVRXVldxWVpYRyIsImlhdCI6MTQ5MDIxNDkzN30.162yW3o65BHTw8X96J1UOgCbh6zhWNsRDUkygOi2mw4\",\n\t\"loginToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb2dpblRva2VuIjoiYzVwVDE3VDBucWZZWDg0dVFLelRMZkYxcVJxQWk1emwiLCJ1c2VySWQiOjEsInJvbGUiOiJBRE1JTiIsImlhdCI6MTQ5MDI1ODgxOX0.T7yBiYTkM91Jf_rPF2pGQr8129B3xgnk7-7jSNwHmrE\",\n\t\"entrepreneurId\": 1\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "__addentrepreneur",
+			"request": {
+				"url": "http://localhost:3000/adm/addentrepreneur",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"visitorToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ2aXNpdG9yVG9rZW4iOiJJUkZEaUFtbGY0bDJnenA3bkpBRElTMVRXVldxWVpYRyIsImlhdCI6MTQ5MDIxNDkzN30.162yW3o65BHTw8X96J1UOgCbh6zhWNsRDUkygOi2mw4\",\n\t\"loginToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb2dpblRva2VuIjoiYzVwVDE3VDBucWZZWDg0dVFLelRMZkYxcVJxQWk1emwiLCJ1c2VySWQiOjEsInJvbGUiOiJBRE1JTiIsImlhdCI6MTQ5MDI1ODgxOX0.T7yBiYTkM91Jf_rPF2pGQr8129B3xgnk7-7jSNwHmrE\",\n\t\"name\": \"Dino Parrella\",\n\t\"description\": \"This guy..\",\n\t\"dob\": \"2017-03-22T23:00:00.000Z\",\n\t\"city\": \"Zurich\",\n\t\"countryId\": 1,\n\t\"status\": \"DRAFT\",\n\t\"teamId\": 1\n}"
 				},
 				"description": ""
 			},

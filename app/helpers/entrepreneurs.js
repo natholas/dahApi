@@ -19,4 +19,15 @@ entrepreneurs.getById = function (id, callback) {
   });
 };
 
+entrepreneurs.add = function (name, description, dob, city, countryId, status, teamId, callback) {
+  connection.query(
+    'INSERT INTO entrepreneur (name, description, dob, city, countryId, status, teamId) VALUES (?,?,?,?,?,?,?)',
+    [name, description, dob, city, countryId, status, teamId], function(error, rows, fields) {
+    if (error) {
+      console.log(error);
+      callback(false);
+    } else callback(rows);
+  });
+};
+
 module.exports = entrepreneurs;
