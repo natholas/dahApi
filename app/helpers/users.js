@@ -1,3 +1,6 @@
+var jwt = require('jsonwebtoken');
+var configs = require('../configs');
+var email = require('../helpers/email');
 var passwordHash = require('password-hash');
 var connection = require('./connection');
 
@@ -9,7 +12,7 @@ users.create = function(emailAddress, nickname, password, publicStatus, callback
     if (error) {
       console.log(error);
       callback(false);
-    } else callback(true);
+    } else callback(rows.insertId);
   });
 };
 
@@ -26,7 +29,6 @@ users.login = function (emailAddress, password, callback) {
 users.update = function (userId, changes, callback) {
   var string = "";
   var variables = [];
-
   for (var i in changes) {
     string += i + ' = ?, ';
     variables.push(changes[i]);
@@ -35,14 +37,21 @@ users.update = function (userId, changes, callback) {
   variables.push(userId);
   connection.query('UPDATE users SET ' + string + ' WHERE userId = ?', variables, function(error, rows, fields) {
     if (error) console.log(error);
-    callback({status: !error});
+    callback(!error);
   });
 };
 
 users.exists = function (emailAddress, callback) {
   connection.query('SELECT userId FROM users WHERE emailAddress = ?', [emailAddress], function(error, rows, fields) {
     if (error) console.log(error);
-    callback(!!rows.length);
+    callback(rows.length ? rows[0].userId : false);
+  });
+};
+
+users.sendEmailConfirmation = function (userId, emailAddress, callback) {
+  var token = jwt.sign({emailToConfirm: params.emailAddress, userId: response}, configs.key);
+  email([params.emailAddress], 'Verify your account', '<h2>Please verify your new dignity and hope account</h2><a href="">Verify your account</a><br><br><p>Token: ' + token + '</p>', function(response) {
+    callback(response);
   });
 };
 

@@ -2,9 +2,6 @@ var jwt = require('jsonwebtoken');
 var configs = require('../configs');
 var functions = require('../helpers/functions');
 
-
-var post = require('../helpers/post');
-
 var ex = {};
 
 ex.validation = {

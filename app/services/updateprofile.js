@@ -47,12 +47,24 @@ ex.func = function(params, callback) {
   }
 
   if (changes.password) changes.password = passwordHash.generate(changes.password);
+  if (changes.emailAddress) changes.emailVerified = false;
 
   if (!objSize(changes)) callback({error: 'NOTHING_TO_CHANGE'});
-  else users.update(jwt.verify(params.loginToken, configs.key).userId, changes, function(response) {
-    if (!response) callback({error: 'UPDATE_FAILED'});
-    else callback(response);
-  });
+  else {
+    var userId = jwt.verify(params.loginToken, configs.key).userId;
+    users.update(userId, changes, function(response) {
+      if (!response) callback({error: 'UPDATE_FAILED'});
+      else {
+        if (changes.emailAddress && params.reverifyEmail) {
+          users.sendEmailConfirmation(userId, changes.emailAddress, function(response) {
+            if (response) callback({status: true});
+            else callback({error: 'UPDATED_BUT_EMAIL_FAILED_TO_SEND'});
+          });
+        }
+        else callback(response);
+      }
+    });
+  }
 
 };
 

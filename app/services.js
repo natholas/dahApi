@@ -6,6 +6,7 @@ var services = {
   bootloader: require('./services/bootloader'),
   signup: require('./services/signup'),
   login: require('./services/login'),
+  confirmemail: require('./services/confirmemail'),
   updateprofile: require('./services/updateprofile'),
   getentrepreneurs: require('./services/getentrepreneurs'),
   getentrepreneur: require('./services/getentrepreneur')

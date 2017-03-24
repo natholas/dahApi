@@ -24,6 +24,9 @@ ex.validation = {
       maxLength: 64,
       pattern: '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,10}$'
     },
+    reverifyEmail: {
+      type: 'boolean'
+    },
     role: {
       type: 'string',
       enum: ['USER', 'ADMIN', 'SUPER']
@@ -58,11 +61,22 @@ ex.func = function(params, callback) {
   }
 
   if (changes.password) changes.password = passwordHash.generate(changes.password);
+  if (changes.emailAddress && params.reverifyEmail) {
+    changes.emailVerified = false;
+  }
 
   if (!objSize(changes)) callback({error: 'NOTHING_TO_CHANGE'});
   else users.update(params.userId, changes, function(response) {
     if (!response) callback({error: 'UPDATE_FAILED'});
-    else callback(response);
+    else {
+      if (changes.emailAddress && params.reverifyEmail) {
+        users.sendEmailConfirmation(params.userId, changes.emailAddress, function(response) {
+          if (response) callback({status: true});
+          else callback({error: 'UPDATED_BUT_EMAIL_FAILED_TO_SEND'});
+        });
+      }
+      else callback(response);
+    }
   });
 
 };
