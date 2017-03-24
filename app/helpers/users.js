@@ -17,12 +17,28 @@ users.create = function(emailAddress, nickname, password, publicStatus, callback
 };
 
 users.login = function (emailAddress, password, callback) {
-  connection.query('SELECT userId, password, role FROM users WHERE emailAddress = ?', [emailAddress], function(error, rows, fields) {
-    if (!error && rows.length && passwordHash.verify(password, rows[0].password)) {
-      callback({userId: rows[0].userId, role: rows[0].role});
-    } else {
+  connection.query('SELECT * FROM users WHERE emailAddress = ?', [emailAddress], function(error, rows, fields) {
+    if (error || !rows.length || !passwordHash.verify(password, rows[0].password)) {
       callback(false);
+      return;
     }
+    var user = rows[0];
+    if (user.status != 'ACTIVE') {
+      callback(false);
+      return;
+    }
+    connection.query('UPDATE users SET lastLoginTime = CURRENT_TIMESTAMP WHERE userId = ?', [user.userId]);
+    callback({
+      userId: user.userId,
+      role: user.role,
+      userDetails: {
+        emailAddress: user.emailAddress,
+        emailVerified: user.emailVerified,
+        nickname: user.nickname,
+        publicStatus: user.publicStatus
+      }
+    });
+
   });
 };
 
