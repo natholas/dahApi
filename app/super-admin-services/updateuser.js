@@ -56,7 +56,7 @@ ex.validation = {
 ex.func = function(params, callback) {
   var changes = {};
   for (var i in params) {
-    if (i == 'visitorToken' || i == 'loginToken') continue;
+    if (i == 'visitorToken' || i == 'loginToken' || i == 'reverifyEmail') continue;
     if (ex.validation.properties[i]) changes[i] = params[i];
   }
 
@@ -70,7 +70,7 @@ ex.func = function(params, callback) {
     if (!response) callback({error: 'UPDATE_FAILED'});
     else {
       if (changes.emailAddress && params.reverifyEmail) {
-        users.sendEmailConfirmation(params.userId, changes.emailAddress, function(response) {
+        users.sendEmailConfirmation(changes.userId, changes.emailAddress, function(response) {
           if (response) callback({status: true});
           else callback({error: 'UPDATED_BUT_EMAIL_FAILED_TO_SEND'});
         });

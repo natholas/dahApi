@@ -38,7 +38,7 @@ ex.func = function(params, callback) {
     else {
       users.create(params.emailAddress, params.nickname, params.password, params.publicStatus, function(userId) {
         if (userId) {
-          users.sendEmailConfirmation(userId, changes.emailAddress, function(response) {
+          users.sendEmailConfirmation(userId, params.emailAddress, function(response) {
             callback(response);
           });
         }
