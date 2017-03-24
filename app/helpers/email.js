@@ -25,8 +25,8 @@ module.exports = function(to, subject, body, callback) {
   transporter.sendMail(mailOptions, function(error, info) {
       if (error) {
         console.log(error);
-        callback({error: error});
+        callback(false);
       }
-      else callback({sent: true});
+      else callback(true);
   });
 }

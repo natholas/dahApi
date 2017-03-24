@@ -12,6 +12,10 @@ app.post('/*', function(req, res) {
   });
 });
 
+app.get('/*', function(req, res) {
+  res.send('THIS IS A POST ONLY SERVICE');
+});
+
 app.set('port', process.env.PORT || 3000);
 
 app.listen(app.get('port'), function() {

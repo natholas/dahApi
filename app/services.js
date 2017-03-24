@@ -7,6 +7,8 @@ var services = {
   signup: require('./services/signup'),
   login: require('./services/login'),
   confirmemail: require('./services/confirmemail'),
+  sendpasswordreset: require('./services/sendpasswordreset'),
+  resetpassword: require('./services/resetpassword'),
   updateprofile: require('./services/updateprofile'),
   getentrepreneurs: require('./services/getentrepreneurs'),
   getentrepreneur: require('./services/getentrepreneur')

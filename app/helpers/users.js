@@ -49,8 +49,8 @@ users.exists = function (emailAddress, callback) {
 };
 
 users.sendEmailConfirmation = function (userId, emailAddress, callback) {
-  var token = jwt.sign({emailToConfirm: params.emailAddress, userId: response}, configs.key);
-  email([params.emailAddress], 'Verify your account', '<h2>Please verify your new dignity and hope account</h2><a href="">Verify your account</a><br><br><p>Token: ' + token + '</p>', function(response) {
+  var token = jwt.sign({emailToConfirm: emailAddress, userId: userId}, configs.key);
+  email([emailAddress], 'Verify your account', '<h2>Please verify your new dignity and hope account</h2><a href="">Verify your account</a><br><br><p>Token: ' + token + '</p>', function(response) {
     callback(response);
   });
 };
@@ -73,5 +73,12 @@ users.doChanges = function (params, changes, reverifyEmail, callback) {
     });
   }
 };
+
+users.sendResetEmail = function (userId, emailAddress, callback) {
+  var token = jwt.sign({passwordResetEmail: emailAddress, userId: userId}, configs.key);
+  email([emailAddress], 'Reset your password', '<h2>You requested a password reset.</h2><a href="">Reset password</a><br><br><p>Token: ' + token + '</p>', function(response) {
+    callback(response);
+  });
+}
 
 module.exports = users;

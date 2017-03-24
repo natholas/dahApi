@@ -61,8 +61,12 @@ ex.func = function(params, callback) {
   }
 
   if (changes.password) changes.password = passwordHash.generate(changes.password);
-  if (changes.emailAddress && params.reverifyEmail) {
-    changes.emailVerified = false;
+  if (changes.emailAddress) {
+    if (params.reverifyEmail) changes.emailVerified = false;
+    users.exists(changes.emailAddress, function(response) {
+      if (!response) users.doChanges(params, changes, true, callback);
+      else callback({error: 'EMAILADDRESS_NOT_UNIQUE'});
+    });
   }
 
   users.doChanges(params, changes, params.reverifyEmail, callback);
