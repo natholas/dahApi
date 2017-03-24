@@ -11,7 +11,9 @@ module.exports = function(url, data, callback) {
     try {
       body = JSON.parse(body);
       if (response.statusCode == 200) callback(body);
-      else callback(false);
+      else {
+        callback(false);
+      }
     } catch(error) {
       callback(false);
     }

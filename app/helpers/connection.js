@@ -15,7 +15,7 @@ connection.query = function (query, params, callback) {
       if (conn) conn.release();
     }
     else conn.query(query, params, function(error, rows, fields) {
-      callback(error, rows, fields);
+      if (callback) callback(error, rows, fields);
       conn.release();
     });
   });

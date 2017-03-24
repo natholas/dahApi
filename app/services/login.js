@@ -1,7 +1,7 @@
 var jwt = require('jsonwebtoken');
+var configs = require('../configs');
 var users = require('../helpers/users');
 var functions = require('../helpers/functions');
-var configs = require('../configs');
 
 var ex = {};
 

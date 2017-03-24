@@ -11,7 +11,8 @@ var services = {
   resetpassword: require('./services/resetpassword'),
   updateprofile: require('./services/updateprofile'),
   getentrepreneurs: require('./services/getentrepreneurs'),
-  getentrepreneur: require('./services/getentrepreneur')
+  getentrepreneur: require('./services/getentrepreneur'),
+  ordercomplete: require('./services/ordercomplete')
 };
 
 var adminServices = {
@@ -22,7 +23,6 @@ var adminServices = {
 var superAdminServices = {
   updateuser: require('./super-admin-services/updateuser')
 };
-
 
 var v = new Validator();
 
