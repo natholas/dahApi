@@ -50,7 +50,7 @@ ex.validation = {
       enum: ['PUBLIC', 'PRIVATE']
     }
   },
-  required: ['visitorToken', 'loginToken', 'userId']
+  required: ['visitorToken', 'loginToken', 'userId', 'reverifyEmail']
 };
 
 ex.func = function(params, callback) {
@@ -65,19 +65,7 @@ ex.func = function(params, callback) {
     changes.emailVerified = false;
   }
 
-  if (!objSize(changes)) callback({error: 'NOTHING_TO_CHANGE'});
-  else users.update(params.userId, changes, function(response) {
-    if (!response) callback({error: 'UPDATE_FAILED'});
-    else {
-      if (changes.emailAddress && params.reverifyEmail) {
-        users.sendEmailConfirmation(changes.userId, changes.emailAddress, function(response) {
-          if (response) callback({status: true});
-          else callback({error: 'UPDATED_BUT_EMAIL_FAILED_TO_SEND'});
-        });
-      }
-      else callback(response);
-    }
-  });
+  users.doChanges(params, changes, params.reverifyEmail, callback);
 
 };
 

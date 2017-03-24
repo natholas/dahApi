@@ -34,7 +34,7 @@ ex.validation = {
 
 ex.func = function(params, callback) {
   users.exists(params.emailAddress, function(response) {
-    if (response) callback({error: 'ACCOUNT_ALREADY_EXISTS'});
+    if (response) callback({error: 'EMAILADDRESS_NOT_UNIQUE'});
     else {
       users.create(params.emailAddress, params.nickname, params.password, params.publicStatus, function(userId) {
         if (userId) {

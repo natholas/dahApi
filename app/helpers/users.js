@@ -55,4 +55,23 @@ users.sendEmailConfirmation = function (userId, emailAddress, callback) {
   });
 };
 
+users.doChanges = function (params, changes, reverifyEmail, callback) {
+  if (!objSize(changes)) callback({error: 'NOTHING_TO_CHANGE'});
+  else {
+    var userId = jwt.verify(params.loginToken, configs.key).userId;
+    users.update(userId, changes, function(response) {
+      if (!response) callback({error: 'UPDATE_FAILED'});
+      else {
+        if (changes.emailAddress && reverifyEmail) {
+          users.sendEmailConfirmation(userId, changes.emailAddress, function(response) {
+            if (response) callback({status: true});
+            else callback({error: 'UPDATED_BUT_EMAIL_FAILED_TO_SEND'});
+          });
+        }
+        else callback(response);
+      }
+    });
+  }
+};
+
 module.exports = users;

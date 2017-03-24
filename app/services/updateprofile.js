@@ -47,24 +47,13 @@ ex.func = function(params, callback) {
   }
 
   if (changes.password) changes.password = passwordHash.generate(changes.password);
-  if (changes.emailAddress) changes.emailVerified = false;
-
-  if (!objSize(changes)) callback({error: 'NOTHING_TO_CHANGE'});
-  else {
-    var userId = jwt.verify(params.loginToken, configs.key).userId;
-    users.update(userId, changes, function(response) {
-      if (!response) callback({error: 'UPDATE_FAILED'});
-      else {
-        if (changes.emailAddress && params.reverifyEmail) {
-          users.sendEmailConfirmation(userId, changes.emailAddress, function(response) {
-            if (response) callback({status: true});
-            else callback({error: 'UPDATED_BUT_EMAIL_FAILED_TO_SEND'});
-          });
-        }
-        else callback(response);
-      }
+  if (changes.emailAddress) {
+    changes.emailVerified = false;
+    users.exists(changes.emailAddress, function(response) {
+      if (!response) users.doChanges(params, changes, true, callback);
+      else callback({error: 'EMAILADDRESS_NOT_UNIQUE'});
     });
-  }
+  } else users.doChanges(params, changes, true, callback);
 
 };
 
