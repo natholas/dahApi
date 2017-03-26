@@ -95,6 +95,12 @@ users.sendResetEmail = function (userId, emailAddress, callback) {
   email([emailAddress], 'Reset your password', '<h2>You requested a password reset.</h2><a href="">Reset password</a><br><br><p>Token: ' + token + '</p>', function(response) {
     callback(response);
   });
-}
+};
+
+users.getInvestments = function (userId, callback) {
+  connection.query('SELECT * FROM investments WHERE userId = ?', [userId], function(error, rows, fields) {
+    callback(error ? false : rows);
+  });
+};
 
 module.exports = users;

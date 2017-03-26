@@ -33,7 +33,7 @@ ex.func = function(params, callback) {
         entrepreneur.status != 'DRAFT' ||
         (
           params.loginToken &&
-          jwt.verify(params.loginToken, configs.key).role == 'ADMIN'
+            ['ADMIN', 'SUPER'].indexOf(jwt.verify(params.loginToken, configs.key).role) > 0
         )
       ) callback(entrepreneur);
       else callback({error: 'ENTREPRENEUR_NOT_FOUND'});

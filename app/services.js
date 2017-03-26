@@ -12,6 +12,8 @@ var services = {
   updateprofile: require('./services/updateprofile'),
   getentrepreneurs: require('./services/getentrepreneurs'),
   getentrepreneur: require('./services/getentrepreneur'),
+  getinvestors: require('./services/getinvestors'),
+  getinvestments: require('./services/getinvestments'),
   ordercomplete: require('./services/ordercomplete')
 };
 

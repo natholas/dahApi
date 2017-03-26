@@ -41,4 +41,14 @@ entrepreneurs.update = function (entrepreneurId, name, description, dob, city, c
   });
 };
 
+entrepreneurs.getInvestors = function (entrepreneurId, callback) {
+  connection.query(
+    'SELECT * FROM investors WHERE entrepreneurId = ?', [entrepreneurId], function(error, rows, fields) {
+    if (error) {
+      console.log(error);
+      callback(false);
+    } else callback(rows);
+  });
+}
+
 module.exports = entrepreneurs;

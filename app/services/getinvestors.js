@@ -11,20 +11,21 @@ ex.validation = {
     visitorToken: {
       type: 'string'
     },
-    status: {
-      type: 'string',
-      enum: ['DRAFT', 'LIVE']
+    entrepreneurId: {
+      type: 'integer'
     }
   },
-  required: ['visitorToken']
+  required: ['visitorToken', 'entrepreneurId']
 };
 
 ex.func = function(params, callback) {
-  var role = jwt.verify(params.loginToken, configs.key).role;
-  var status = 'LIVE';
-  if (role == 'ADMIN' && params.status) status = params.status;
-  entrepreneurs.getAllByStatus(status, function(response) {
-    callback({status: status, entrepreneurs: response});
+  entrepreneurs.getInvestors(params.entrepreneurId, function(response) {
+    console.log(response);
+    if (!response || !response.length) {
+      callback({error: 'ENTREPRENEUR_NOT_FOUND'});
+    }
+    else callback({investors: response});
+
   });
 };
 
