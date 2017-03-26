@@ -11,6 +11,9 @@ ex.validation = {
     visitorToken: {
       type: 'string'
     },
+    loginToken: {
+      type: 'string'
+    },
     status: {
       type: 'string',
       enum: ['DRAFT', 'LIVE']
@@ -20,9 +23,11 @@ ex.validation = {
 };
 
 ex.func = function(params, callback) {
-  var role = jwt.verify(params.loginToken, configs.key).role;
   var status = 'LIVE';
-  if (role == 'ADMIN' && params.status) status = params.status;
+  if (params.loginToken) {
+    var role = jwt.verify(params.loginToken, configs.key).role;
+    if (role == 'ADMIN' && params.status) status = params.status;
+  }
   entrepreneurs.getAllByStatus(status, function(response) {
     callback({status: status, entrepreneurs: response});
   });

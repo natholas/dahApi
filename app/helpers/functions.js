@@ -6,11 +6,10 @@ module.exports = {
     for (var i = 0; i < length; i++)
       text += possible.charAt(Math.floor(Math.random() * possible.length));
     return text;
+  },
+  objSize: function(obj) {
+    var size = 0, key;
+    for (i in obj) size++;
+    return size;
   }
-};
-
-objSize = function(obj) {
-  var size = 0, key;
-  for (i in obj) size++;
-  return size;
 };

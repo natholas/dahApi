@@ -49,6 +49,6 @@ entrepreneurs.getInvestors = function (entrepreneurId, callback) {
       callback(false);
     } else callback(rows);
   });
-}
+};
 
 module.exports = entrepreneurs;

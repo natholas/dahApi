@@ -1,5 +1,7 @@
 var entrepreneurs = require('../helpers/entrepreneurs');
+var images = require('../helpers/images');
 var ex = {};
+fs = require('fs');
 
 ex.validation = {
   type: 'object',
@@ -34,15 +36,21 @@ ex.validation = {
     },
     teamId: {
       type: 'integer'
+    },
+    images: {
+      type: 'array'
     }
   },
-  required: ['visitorToken', 'loginToken', 'name', 'description', 'dob', 'city', 'countryId', 'amountNeeded', 'status', 'teamId']
+  required: ['visitorToken', 'loginToken', 'name', 'description', 'dob', 'city', 'countryId', 'amountNeeded', 'status', 'teamId', 'images']
 };
 
 ex.func = function(params, callback) {
   entrepreneurs.add(params.name, params.description, params.dob, params.city, params.countryId, params.amountNeeded, params.status, params.teamId, function(response) {
     if (!response) callback({error: 'FAILED_TO_INSERT'});
-    else callback({entrepreneurId: response.insertId});
+    else {
+      images.add('entrepreneurId', response.insertId, params.images);
+      callback({entrepreneurId: response.insertId});
+    }
   });
 };
 
