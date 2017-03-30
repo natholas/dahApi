@@ -26,31 +26,31 @@ app.use(function (req, res, next) {
     next();
 });
 
-app.set('port', 443);
+// app.set('port', 443);
+var ports = [80, 443];
 
 // app.listen(app.get('port'), function() {
 //   console.log("Express has started");
 // });
 
-var privateKey = fs.readFileSync( '/etc/letsencrypt/keys/0000_key-certbot.pem', 'utf8' );
-var certificate = fs.readFileSync( '/etc/letsencrypt/csr/0000_csr-certbot.pem', 'utf8' );
+var privateKey = fs.readFileSync( '/etc/letsencrypt/keys/0000_key-certbot.pem' );
+var certificate = fs.readFileSync( '/etc/letsencrypt/csr/0000_csr-certbot.pem' );
 
-console.log(privateKey);
-console.log();
-console.log();
-console.log();
-console.log();
-console.log(certificate);
-console.log();
-console.log();
-console.log();
-console.log();
-https.createServer({
+// https.createServer({
+//     key: privateKey,
+//     cert: certificate
+// }, app).listen(app.get('port'));
+
+var server = https.createServer(
+  {
     key: privateKey,
     cert: certificate
-}, app).listen(app.get('port'));
+  },
+  app
+);
 
-
+server.listen(ports[1])
+app.listen(ports[0])
 
 
 app.get('/', function (req, res) {
