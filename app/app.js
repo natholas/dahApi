@@ -35,6 +35,16 @@ app.set('port', 443);
 var privateKey = fs.readFileSync( '/etc/letsencrypt/keys/0000_key-certbot.pem', 'utf8' );
 var certificate = fs.readFileSync( '/etc/letsencrypt/csr/0000_csr-certbot.pem', 'utf8' );
 
+console.log(privateKey);
+console.log();
+console.log();
+console.log();
+console.log();
+console.log(certificate);
+console.log();
+console.log();
+console.log();
+console.log();
 https.createServer({
     key: privateKey,
     cert: certificate
