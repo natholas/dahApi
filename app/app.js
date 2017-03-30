@@ -33,6 +33,10 @@ var server = https.createServer({
 server.listen(ports[1]);
 app.listen(ports[0]);
 
+app.get('/', function(req,res) {
+  return res.redirect('https://dignityhope.org');
+});
+
 app.get('/images/*', function(req,res) {
   res.sendFile(path.resolve('images/' + req.originalUrl.substring(8)));
 });
