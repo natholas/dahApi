@@ -2,6 +2,8 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var request = require('./services');
 var path = require('path');
+var http = require('https');
+var fs = require('fs');
 
 var app = express();
 
@@ -23,18 +25,34 @@ app.use(function (req, res, next) {
     next();
 });
 
+app.set('port', 443);
+
+// app.listen(app.get('port'), function() {
+//   console.log("Express has started");
+// });
+
+var privateKey = fs.readFileSync( '/etc/letsencrypt/keys/0000_key-certbot.pem' );
+var certificate = fs.readFileSync( '/etc/letsencrypt/csr/0000_csr-certbot.pem' );
+
+https.createServer({
+    key: privateKey,
+    cert: certificate
+}, app).listen(app.get('port'));
+
+
+
+
+app.get('/', function (req, res) {
+    res.writeHead(200);
+    res.end("hello world\n");
+});
+
 app.get('/images/*', function(req,res) {
   res.sendFile(path.resolve('images/' + req.originalUrl.substring(8)));
-})
+});
 
 app.post('/*', function(req, res) {
   request(req, function(response) {
     res.send(response);
   });
-});
-
-app.set('port', process.env.PORT || 3000);
-
-app.listen(app.get('port'), function() {
-  console.log("Express has started");
 });
