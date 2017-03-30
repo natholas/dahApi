@@ -1,11 +1,12 @@
 var mysql = require('mysql');
+var configs = require('../configs');
 
 var connection = mysql.createPool({
   connectionLimit: 50,
-  host: 'localhost',
-  user: 'root',
-  password: '',
-  database: 'nodeDah'
+  host: configs.db.host,
+  user: configs.db.user,
+  password: configs.db.password,
+  database: configs.db.database
 });
 
 connection.query = function (query, params, callback) {
