@@ -2,7 +2,8 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var request = require('./services');
 var path = require('path');
-var http = require('https');
+var http = require('http');
+var https = require('https');
 var fs = require('fs');
 
 var app = express();
