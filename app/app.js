@@ -17,27 +17,42 @@ app.use(function (req, res, next) {
   next();
 });
 
-// Force https
-app.use(function requireHTTPS(req, res, next) {
-  if (!req.secure) return res.redirect('https://' + req.get('host') + req.originalUrl);
-  next();
-});
+if (__dirname == 'C:\\Users\\Nathan\\Documents\\dah\\api\\app') {
+  // Dev
+  app.listen(3000, function () {
+    console.log('-------------------');
+    console.log();
+    console.log('DEVELOPMENT SERVER RUNNING.');
+    console.log('IF YOU ARE SEEING THIS IN PRODUCTION, YOU HAVE A PROBLEM.');
+    console.log();
+    console.log('-------------------');
+  });
+}
+else {
+  // Production
 
-var ports = [80, 443];
+  // Force https
+  app.use(function requireHTTPS(req, res, next) {
+    if (!req.secure) return res.redirect('https://' + req.get('host') + req.originalUrl);
+    next();
+  });
 
-var server = https.createServer({
-  key: fs.readFileSync('/etc/letsencrypt/live/dignity-hope.org/privkey.pem'),
-  cert: fs.readFileSync('/etc/letsencrypt/live/dignity-hope.org/fullchain.pem')
-}, app);
+  var ports = [80, 443];
 
-server.listen(ports[1]);
-app.listen(ports[0]);
+  var server = https.createServer({
+    key: fs.readFileSync('/etc/letsencrypt/live/dignity-hope.org/privkey.pem'),
+    cert: fs.readFileSync('/etc/letsencrypt/live/dignity-hope.org/fullchain.pem')
+  }, app);
 
-app.get('/', function(req,res) {
+  server.listen(ports[1]);
+  app.listen(ports[0]);
+}
+
+app.get('/', function(req, res) {
   return res.redirect('https://dignityhope.org');
 });
 
-app.get('/images/*', function(req,res) {
+app.get('/images/*', function(req, res) {
   res.sendFile(path.resolve('images/' + req.originalUrl.substring(8)));
 });
 
