@@ -64,10 +64,6 @@ ex.func = function(params, callback) {
       }
     );
   });
-
-  // saferpay.init(params.amount, function(response) {
-  //   callback(response);
-  // })
 };
 
 module.exports = ex;

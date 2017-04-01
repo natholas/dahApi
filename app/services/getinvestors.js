@@ -20,8 +20,7 @@ ex.validation = {
 
 ex.func = function(params, callback) {
   entrepreneurs.getInvestors(params.entrepreneurId, function(response) {
-    console.log(response);
-    if (!response || !response.length) {
+    if (!response) {
       callback({error: 'ENTREPRENEUR_NOT_FOUND'});
     }
     else callback({investors: response});

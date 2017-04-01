@@ -51,4 +51,18 @@ entrepreneurs.getInvestors = function (entrepreneurId, callback) {
   });
 };
 
+entrepreneurs.checkIfCompleted = function (entrepreneurId) {
+  connection.query('SELECT * FROM entrepreneur WHERE entrepreneurId = ?', [entrepreneurId], function(error, rows, fields) {
+    if (error || !rows.length) console.log(error);
+    else {
+      var entrepreneur = rows[0];
+      if (entrepreneur.totalInvested >= entrepreneur.amountNeeded) {
+        connection.query('UPDATE entrepreneurs SET status = "ENDED", fundedTime = CURRENT_TIMESTAMP WHERE entrepreneurId = ?', [entrepreneurId], function(error) {
+          if (error) console.log(error);
+        });
+      }
+    }
+  });
+};
+
 module.exports = entrepreneurs;

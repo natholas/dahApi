@@ -15,7 +15,7 @@ orders.validate = function (entrepreneurId, amount, callback) {
     }
     else callback(false);
   });
-}
+};
 
 orders.create = function (userId, entrepreneurId, amount, donationAmount, message, callback) {
   connection.query(
@@ -24,7 +24,7 @@ orders.create = function (userId, entrepreneurId, amount, donationAmount, messag
     if (error) callback(false);
     else callback(rows.insertId);
   });
-}
+};
 
 orders.init = function (orderId, amount, callback) {
   orders.request(orderId, 'INIT', null, function(requestId) {
@@ -40,6 +40,41 @@ orders.init = function (orderId, amount, callback) {
     });
     else callback(false);
   });
+};
+
+orders.assert = function (orderId, token, callback) {
+  orders.request(orderId, 'ASSERT', null, function(requestId) {
+    if (requestId) saferpay.assert(token, requestId, function(response) {
+      if (!response) {
+        callback(false);
+      }
+      else if (response.Transaction.Status == 'AUTHORIZED') {
+        orders.addTransactionIdToOrder(orderId, response.Transaction.Id);
+        callback(response);
+      }
+      else {
+        callback(false);
+      }
+    });
+    else callback(false);
+  });
+};
+
+orders.complete = function (orderId, transactionId, callback) {
+  orders.request(orderId, 'CAPTURE', null, function(requestId) {
+    if (requestId) saferpay.capture(transactionId, requestId, function(response) {
+      if (response && response.OrderId == orderId) {
+        connection.query('UPDATE orders SET status = "DONE" WHERE orderId = ?', [orderId], function(error, rows, fields) {
+          if (error) {
+            console.log(error);
+          }
+          else callback(true);
+        });
+      }
+      else callback(false);
+    });
+    else callback(false);
+  });
 }
 
 orders.request = function (orderId, type, token, callback) {
@@ -48,14 +83,18 @@ orders.request = function (orderId, type, token, callback) {
   [orderId, requestId, token, type], function(error, rows, fields) {
     callback(!error ? requestId : false);
   });
-}
+};
 
 orders.addTokenToRequest = function (requestId, token) {
   connection.query('UPDATE saferPayLog SET token = ? WHERE requestId = ?', [token, requestId]);
-}
+};
+
+orders.addTransactionIdToOrder = function (orderId, transactionId) {
+  connection.query('UPDATE orders SET transactionId = ? WHERE orderId = ?', [transactionId, orderId]);
+};
 
 orders.cancel = function (orderId) {
-  connection.query('UPDATE orders SET status = "CANCELLED" WHERE orderId = ?', [orderId]);
-}
+  connection.query('UPDATE orders SET status = "CANCELLED" WHERE orderId = ? AND status != "DONE"', [orderId]);
+};
 
 module.exports = orders;

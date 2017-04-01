@@ -17,11 +17,11 @@ ex.validation = {
     nickname: {
       type: 'string',
       minLength: 5,
-      maxLength: 20
+      maxLength: 64
     },
     password: {
       type: 'string',
-      minLength: 5,
+      minLength: 8,
       maxLength: 128
     },
     publicStatus: {
