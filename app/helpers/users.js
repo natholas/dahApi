@@ -66,7 +66,7 @@ users.exists = function (emailAddress, callback) {
 
 users.sendEmailConfirmation = function (userId, emailAddress, callback) {
   var token = jwt.sign({emailToConfirm: emailAddress, userId: userId}, configs.key);
-  email([emailAddress], 'Verify your account', '<h2>Please verify your new dignity and hope account</h2><a href="">Verify your account</a><br><br><p>Token: ' + token + '</p>', function(response) {
+  email([emailAddress], 'Verify your account', '<h2>Please verify your new dignity and hope account</h2><a href="' + configs.frontendUrl + 'confirmemail?emailConfirmToken=' + token + '">Verify your account</a>', function(response) {
     callback(response);
   });
 };
