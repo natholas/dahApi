@@ -44,11 +44,7 @@ ex.validation = {
 ex.func = function(params, callback) {
   entrepreneurs.add(params.name, params.description, params.dob, params.city, params.countryId, params.amountNeeded, params.status, params.teamId, function(response) {
     if (!response) callback({error: 'FAILED_TO_INSERT'});
-    // else {
-    //   images.add('entrepreneurId', response.insertId, params.images);
-    //   callback({entrepreneurId: response.insertId});
-    // }
-    else callback({status: 1});
+    else callback({entrepreneurId: response.insertId});
   });
 };
 

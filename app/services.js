@@ -19,7 +19,8 @@ var services = {
 
 var adminServices = {
   addentrepreneur: require('./admin-services/addentrepreneur'),
-  updateentrepreneur: require('./admin-services/updateentrepreneur')
+  updateentrepreneur: require('./admin-services/updateentrepreneur'),
+  addimage: require('./admin-services/addimage')
 };
 
 var superAdminServices = {

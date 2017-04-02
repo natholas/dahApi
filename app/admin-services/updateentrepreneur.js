@@ -33,7 +33,7 @@ ex.validation = {
     },
     status: {
       type: 'string',
-      enum: ['DRAFT', 'LIVE']
+      enum: ['DRAFT', 'LIVE', 'FUNDED']
     },
     teamId: {
       type: 'integer'

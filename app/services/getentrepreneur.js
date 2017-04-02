@@ -25,7 +25,7 @@ ex.func = function(params, callback) {
   entrepreneurs.getById(params.entrepreneurId, function(response) {
 
     if (!response || !response.length) {
-      callback({error: 'ENTREPRENEUR_NOT_FOUND'});
+      callback({error: 'ENTREPRENEUR_NOT_FOUND1'});
     }
     else {
       var entrepreneur = response[0];
@@ -33,10 +33,10 @@ ex.func = function(params, callback) {
         entrepreneur.status != 'DRAFT' ||
         (
           params.loginToken &&
-            ['ADMIN', 'SUPER'].indexOf(jwt.verify(params.loginToken, configs.key).role) > 0
+            ['ADMIN', 'SUPER'].indexOf(jwt.verify(params.loginToken, configs.key).role) > -1
         )
       ) callback(entrepreneur);
-      else callback({error: 'ENTREPRENEUR_NOT_FOUND'});
+      else callback({error: 'ENTREPRENEUR_NOT_FOUND2'});
     }
 
 

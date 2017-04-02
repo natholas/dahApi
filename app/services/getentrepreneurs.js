@@ -26,7 +26,7 @@ ex.func = function(params, callback) {
   var status = 'LIVE';
   if (params.loginToken) {
     var role = jwt.verify(params.loginToken, configs.key).role;
-    if (['ADMIN', 'SUPER'].indexOf(status) > -1 && params.status) status = params.status;
+    if (['ADMIN', 'SUPER'].indexOf(role) > -1 && params.status) status = params.status;
   }
   entrepreneurs.getAllByStatus(status, function(response) {
     callback({status: status, entrepreneurs: response});
