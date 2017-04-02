@@ -8,7 +8,7 @@ var paymentComplete = require('./paymentcomplete');
 
 var app = express();
 
-app.use(bodyParser.json());
+app.use(bodyParser.json({limit: '1mb'}));
 app.use('../images', express.static(__dirname));
 
 app.use(function (req, res, next) {
