@@ -13,7 +13,7 @@ var services = {
   getentrepreneurs: require('./services/getentrepreneurs'),
   getentrepreneur: require('./services/getentrepreneur'),
   getinvestors: require('./services/getinvestors'),
-  getinvestments: require('./services/getinvestments'),
+  getorders: require('./services/getorders'),
   ordercomplete: require('./services/ordercomplete')
 };
 

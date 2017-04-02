@@ -67,7 +67,7 @@ CREATE TABLE `entrepreneur` (
 ,`city` varchar(45)
 ,`countryId` int(11)
 ,`amountNeeded` float
-,`status` enum('DRAFT','LIVE','ENDED')
+,`status` enum('DRAFT','LIVE','FUNDED')
 ,`teamId` int(11)
 ,`createdTime` datetime
 ,`fundedTime` datetime
@@ -90,7 +90,7 @@ CREATE TABLE `entrepreneurs` (
   `city` varchar(45) DEFAULT NULL,
   `countryId` int(11) DEFAULT NULL,
   `amountNeeded` float DEFAULT NULL,
-  `status` enum('DRAFT','LIVE','ENDED') DEFAULT NULL,
+  `status` enum('DRAFT','LIVE','FUNDED') DEFAULT NULL,
   `teamId` int(11) DEFAULT NULL,
   `createdTime` datetime DEFAULT CURRENT_TIMESTAMP,
   `fundedTime` datetime DEFAULT NULL

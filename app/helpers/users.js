@@ -97,8 +97,8 @@ users.sendResetEmail = function (userId, emailAddress, callback) {
   });
 };
 
-users.getInvestments = function (userId, callback) {
-  connection.query('SELECT * FROM investments WHERE userId = ?', [userId], function(error, rows, fields) {
+users.getOrders = function (userId, callback) {
+  connection.query('SELECT * FROM orders WHERE userId = ? AND status = "DONE"', [userId], function(error, rows, fields) {
     callback(error ? false : rows);
   });
 };

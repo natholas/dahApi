@@ -19,9 +19,9 @@ ex.validation = {
 
 ex.func = function(params, callback) {
   var user = jwt.verify(params.loginToken, configs.key);
-  users.getInvestments(user.userId, function(response) {
-    if (response) callback({investments: response});
-    else callback({error: 'COULD_NOT_GET_INVESTMENTS'});
+  users.getOrders(user.userId, function(response) {
+    if (response) callback({orders: response});
+    else callback({error: 'COULD_NOT_GET_ORDERS'});
   });
 };
 

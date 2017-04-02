@@ -57,7 +57,7 @@ entrepreneurs.checkIfCompleted = function (entrepreneurId) {
     else {
       var entrepreneur = rows[0];
       if (entrepreneur.totalInvested >= entrepreneur.amountNeeded) {
-        connection.query('UPDATE entrepreneurs SET status = "ENDED", fundedTime = CURRENT_TIMESTAMP WHERE entrepreneurId = ?', [entrepreneurId], function(error) {
+        connection.query('UPDATE entrepreneurs SET status = "FUNDED", fundedTime = CURRENT_TIMESTAMP WHERE entrepreneurId = ?', [entrepreneurId], function(error) {
           if (error) console.log(error);
         });
       }
