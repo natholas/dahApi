@@ -53,6 +53,16 @@ entrepreneurs.getInvestors = function (entrepreneurId, callback) {
   });
 };
 
+entrepreneurs.getInvestorMessages = function (entrepreneurId, callback) {
+  connection.query(
+    'SELECT * FROM messages WHERE entrepreneurId = ?', [entrepreneurId], function(error, rows, fields) {
+    if (error) {
+      console.log(error);
+      callback(false);
+    } else callback(rows);
+  });
+};
+
 entrepreneurs.checkIfCompleted = function (entrepreneurId) {
   connection.query('SELECT * FROM entrepreneur WHERE entrepreneurId = ?', [entrepreneurId], function(error, rows, fields) {
     if (error || !rows.length) console.log(error);

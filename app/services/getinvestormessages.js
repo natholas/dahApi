@@ -22,22 +22,12 @@ ex.validation = {
 };
 
 ex.func = function(params, callback) {
-  entrepreneurs.getById(params.entrepreneurId, function(response) {
+  entrepreneurs.getInvestorMessages(params.entrepreneurId, function(response) {
 
     if (!response || !response.length) {
       callback({error: 'ENTREPRENEUR_NOT_FOUND'});
     }
-    else {
-      var entrepreneur = response[0];
-      if (
-        entrepreneur.status != 'DRAFT' ||
-        (
-          params.loginToken &&
-            ['ADMIN', 'SUPER'].indexOf(jwt.verify(params.loginToken, configs.key).role) > -1
-        )
-      ) callback(entrepreneur);
-      else callback({error: 'ENTREPRENEUR_NOT_FOUND'});
-    }
+    else callback({messages: response});
 
 
   });
