@@ -3,8 +3,6 @@ var connection = require('./connection');
 var configs = require('../configs');
 var saferpay = {};
 
-var baseUrl = 'https://test.saferpay.com/api';
-
 saferpay.init = function (orderId, amount, requestId, callback) {
   var params = {
     "RequestHeader": {
@@ -24,12 +22,12 @@ saferpay.init = function (orderId, amount, requestId, callback) {
     },
     "ReturnUrls": {
       "Success": configs.backendUrl + 'paymentcomplete?requestId=' + requestId + '&orderId=' + orderId,
-      "Fail": configs.backendUrl + 'paymentfailed'
+      "Fail": configs.backendUrl + 'paymentfailed?orderId=' + orderId
     }
   };
 
   request.post({
-    url: baseUrl + '/Payment/v1/PaymentPage/Initialize',
+    url: configs.saferpayUrl + '/Payment/v1/PaymentPage/Initialize',
     headers: {
       'content-type': 'application/json',
       'Authorization': 'Basic ' + new Buffer(configs.auth.username + ':' + configs.auth.password).toString('base64')
@@ -58,7 +56,7 @@ saferpay.assert = function (token, requestId, callback) {
   };
 
   request.post({
-    url: baseUrl + '/Payment/v1/PaymentPage/Assert',
+    url: configs.saferpayUrl + '/Payment/v1/PaymentPage/Assert',
     headers: {
       'content-type': 'application/json',
       'Authorization': 'Basic ' + new Buffer(configs.auth.username + ':' + configs.auth.password).toString('base64')
@@ -89,7 +87,7 @@ saferpay.capture = function (transactionId, requestId, callback) {
   };
 
   request.post({
-    url: baseUrl + '/Payment/v1/Transaction/Capture',
+    url: configs.saferpayUrl + '/Payment/v1/Transaction/Capture',
     headers: {
       'content-type': 'application/json',
       'Authorization': 'Basic ' + new Buffer(configs.auth.username + ':' + configs.auth.password).toString('base64')
@@ -120,7 +118,7 @@ saferpay.cancel = function (transactionId, requestId, callback) {
   };
 
   request.post({
-    url: baseUrl + '/Payment/v1/Transaction/Cancel',
+    url: configs.saferpayUrl + '/Payment/v1/Transaction/Cancel',
     headers: {
       'content-type': 'application/json',
       'Authorization': 'Basic ' + new Buffer(configs.auth.username + ':' + configs.auth.password).toString('base64')

@@ -5,6 +5,7 @@ var path = require('path');
 var https = require('https');
 var fs = require('fs');
 var paymentComplete = require('./paymentcomplete');
+var paymentFailed = require('./paymentfailed');
 
 var app = express();
 
@@ -59,6 +60,12 @@ app.get('/images/*', function(req, res) {
 
 app.get('/paymentcomplete*', function(req, res) {
   paymentComplete(req, function(response) {
+    res.redirect(response);
+  });
+});
+
+app.get('/paymentfailed*', function(req, res) {
+  paymentFailed(req, function(response) {
     res.redirect(response);
   });
 });

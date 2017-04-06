@@ -19,14 +19,19 @@ ex.validation = {
       enum: ['DRAFT', 'LIVE', 'FUNDED', 'ALL']
     }
   },
-  required: ['visitorToken']
+  required: ['visitorToken', 'status']
 };
 
 ex.func = function(params, callback) {
   var status = 'LIVE';
-  if (params.loginToken) {
+
+  if (['LIVE', 'FUNDED'].indexOf(params.status) > -1) {
+    status = params.status;
+  } else if (params.loginToken) {
     var role = jwt.verify(params.loginToken, configs.key).role;
-    if (['ADMIN', 'SUPER'].indexOf(role) > -1 && params.status) status = params.status;
+    if (['ADMIN', 'SUPER'].indexOf(role) > -1) {
+      status = params.status;
+    }
   }
   entrepreneurs.getAllByStatus(status, function(response) {
     callback({status: status, entrepreneurs: response});
