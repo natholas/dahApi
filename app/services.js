@@ -1,6 +1,7 @@
 var jwt = require('jsonwebtoken');
 var Validator = require('jsonschema').Validator;
 var configs = require('./configs');
+var tokens = require('./helpers/tokens');
 
 var services = {
   bootloader: require('./services/bootloader'),
@@ -87,23 +88,36 @@ module.exports = function(req, callback) {
       try {
         var decoded = jwt.verify(params.loginToken, configs.key);
         if (!decoded.loginToken) response.error = 'LOGIN_TOKEN_NOT_VALID';
-        if (mode == 'ADMIN' && decoded.role != 'ADMIN' && decoded.role != 'SUPER') response.error = 'PERMISION_DENIED';
+        else if (mode == 'ADMIN' && decoded.role != 'ADMIN' && decoded.role != 'SUPER') response.error = 'PERMISION_DENIED';
         else if (mode == 'SUPER' && decoded.role != 'SUPER') response.error = 'PERMISION_DENIED';
+        else tokens.check(decoded.tokenId, function(resp) {
+          if (resp) {
+            response.data = srvs[service].func(params, function(resp) {
+              if (resp.error) {
+                response.error = resp.error;
+              } else response.data = resp;
+              callback(response);
+            });
+          }
+          else {
+            response.error = 'LOGIN_TOKEN_EXPIRED';
+            callback(response);
+          }
+        });
       } catch (err) {
         response.error = 'LOGIN_TOKEN_NOT_VALID';
       }
+    } else {
+      response.data = srvs[service].func(params, function(resp) {
+        if (resp.error) {
+          response.error = resp.error;
+        } else response.data = resp;
+        callback(response);
+      });
     }
   }
 
-  // Running the service function
-  if (!response.error) {
-    response.data = srvs[service].func(params, function(resp) {
-      if (resp.error) {
-        response.error = resp.error;
-      } else response.data = resp;
-      callback(response);
-    });
-  } else {
+  if (response.error) {
     callback(response);
   }
 

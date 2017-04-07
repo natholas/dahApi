@@ -1,8 +1,10 @@
 var jwt = require('jsonwebtoken');
 var configs = require('../configs');
 var email = require('../helpers/email');
+var functions = require('../helpers/functions');
 var passwordHash = require('password-hash');
 var connection = require('./connection');
+var tokens = require('../helpers/tokens');
 
 var users = {};
 
@@ -65,14 +67,18 @@ users.exists = function (emailAddress, callback) {
 };
 
 users.sendEmailConfirmation = function (userId, emailAddress, callback) {
-  var token = jwt.sign({emailToConfirm: emailAddress, userId: userId}, configs.key);
+  var token = jwt.sign({
+    tokenId: tokens.getId('EMAIL_CONFIRMATION', userId),
+    emailToConfirm: emailAddress,
+    userId: userId
+  }, configs.key);
   email([emailAddress], 'Verify your account', '<h2>Please verify your new dignity and hope account</h2><a href="' + configs.frontendUrl + 'confirmemail?emailConfirmToken=' + token + '">Verify your account</a>', function(response) {
     callback(response);
   });
 };
 
 users.doChanges = function (params, changes, reverifyEmail, callback) {
-  if (!objSize(changes)) callback({error: 'NOTHING_TO_CHANGE'});
+  if (!functions.objSize(changes)) callback({error: 'NOTHING_TO_CHANGE'});
   else {
     var userId = jwt.verify(params.loginToken, configs.key).userId;
     users.update(userId, changes, function(response) {
@@ -91,8 +97,12 @@ users.doChanges = function (params, changes, reverifyEmail, callback) {
 };
 
 users.sendResetEmail = function (userId, emailAddress, callback) {
-  var token = jwt.sign({passwordResetEmail: emailAddress, userId: userId}, configs.key);
-  email([emailAddress], 'Reset your password', '<h2>You requested a password reset.</h2><a href="">Reset password</a><br><br><p>Token: ' + token + '</p>', function(response) {
+  var token = jwt.sign({
+    tokenId: tokens.getId('RESET', userId),
+    passwordResetEmail: emailAddress,
+    userId: userId
+  }, configs.key);
+  email([emailAddress], 'Reset your password', '<h2>You requested a password reset.</h2><a href="' + configs.frontendUrl + 'resetpassword?resetToken=' + token +'">Reset password</a>', function(response) {
     callback(response);
   });
 };

@@ -49,7 +49,7 @@ orders.assert = function (orderId, token, callback) {
         callback(false);
       }
       else if (response.Transaction.Status == 'AUTHORIZED') {
-        orders.addTransactionIdToOrder(orderId, response.Transaction.Id);
+        orders.addOrderDetails(orderId, response.Transaction, response.PaymentMeans);
         callback(response);
       }
       else {
@@ -89,8 +89,8 @@ orders.addTokenToRequest = function (requestId, token) {
   connection.query('UPDATE saferPayLog SET token = ? WHERE requestId = ?', [token, requestId]);
 };
 
-orders.addTransactionIdToOrder = function (orderId, transactionId) {
-  connection.query('UPDATE orders SET transactionId = ? WHERE orderId = ?', [transactionId, orderId]);
+orders.addOrderDetails = function (orderId, transaction, paymentMeans) {
+  connection.query('UPDATE orders SET transactionId = ?, displayText = ? WHERE orderId = ?', [transaction.Id, paymentMeans.DisplayText, orderId]);
 };
 
 orders.cancel = function (orderId) {

@@ -1,6 +1,7 @@
 var passwordHash = require('password-hash');
 var jwt = require('jsonwebtoken');
 var users = require('../helpers/users');
+var tokens = require('../helpers/tokens');
 var configs = require('../configs');
 
 var ex = {};
@@ -27,10 +28,19 @@ ex.func = function(params, callback) {
   try {
     var data = jwt.verify(params.passwordResetToken, configs.key);
     if (data.passwordResetEmail) {
-      changes = {password: passwordHash.generate(params.newPassword)};
-      users.update(data.userId, changes, function(response) {
-        if (response) callback({updated: true});
-        else callback({error: 'UNABLE_TO_UPDATE_PASSWORD'});
+      tokens.check(data.tokenId, function(response) {
+        if (response) {
+          changes = {password: passwordHash.generate(params.newPassword)};
+          users.update(data.userId, changes, function(response) {
+            if (response) {
+              tokens.invalidate(data.tokenId);
+              callback({updated: true});
+            }
+            else callback({error: 'UNABLE_TO_UPDATE_PASSWORD'});
+          });
+        } else {
+          callback({error: 'RESET_TOKEN_EXPIRED'});
+        }
       });
     }
     else callback({error: 'PASSWORDRESETTOKEN_NOT_VALID'})

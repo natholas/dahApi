@@ -2,6 +2,7 @@ var jwt = require('jsonwebtoken');
 var configs = require('../configs');
 var users = require('../helpers/users');
 var functions = require('../helpers/functions');
+var tokens = require('../helpers/tokens');
 
 var ex = {};
 
@@ -28,15 +29,18 @@ ex.func = function(params, callback) {
   users.login(params.emailAddress, params.password, function(response) {
     if (!response) callback({error: 'DATA_DOESNT_MATCH_AN_EXISTING_ACCOUNT'});
     else {
-      callback({
-        loginToken: jwt.sign({
-          loginToken: functions.randomString(32),
-          userId: response.userId,
-          role: response.role
-        }, configs.key),
-        userId: response.id,
-        role: response.role,
-        userDetails: response.userDetails
+      tokens.getId('LOGIN', response.userId, function(id) {
+        callback({
+          loginToken: jwt.sign({
+            tokenId: id,
+            loginToken: functions.randomString(32),
+            userId: response.userId,
+            role: response.role
+          }, configs.key),
+          userId: response.id,
+          role: response.role,
+          userDetails: response.userDetails
+        });
       });
     }
   });
