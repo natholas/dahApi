@@ -28,7 +28,7 @@ ex.validation = {
     },
     password: {
       type: 'string',
-      minLength: 5,
+      minLength: 6,
       maxLength: 128
     },
     publicStatus: {
