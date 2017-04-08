@@ -15,7 +15,7 @@ saferpay.init = function (orderId, amount, requestId, callback) {
     "Payment": {
       "Amount": {
         "Value": amount * 100,
-        "CurrencyCode": "CHF"
+        "CurrencyCode": "EUR"
       },
       "OrderId": orderId,
       "Description": "Investment"

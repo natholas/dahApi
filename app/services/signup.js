@@ -40,7 +40,7 @@ ex.func = function(params, callback) {
         if (userId) {
           users.sendEmailConfirmation(userId, params.emailAddress, function(response) {
             callback(response);
-          });
+          }, true);
         }
         else callback(response);
       });

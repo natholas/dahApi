@@ -2,19 +2,29 @@ var nodemailer = require('nodemailer');
 var configs = require('../configs');
 
 // create reusable transporter object using the default SMTP transport
+// let transporter = nodemailer.createTransport({
+//   service: 'gmail',
+//   auth: {
+//     user: 'web.dignityhope@gmail.com',
+//     pass: configs.emailPassword
+//   }
+// });
 let transporter = nodemailer.createTransport({
-  service: 'gmail',
+  host: 'auth.smtp.1and1.co.uk',
+  port: 587,
+  secure: false, // upgrade later with STARTTLS
   auth: {
-    user: 'web.dignityhope@gmail.com',
-    pass: configs.emailPassword
+    user: 'no-reply@dignityhope.org',
+    pass: '623uiherguydcg123'
   }
 });
+
 
 module.exports = function(to, subject, body, callback) {
 
   // setup email data with unicode symbols
   let mailOptions = {
-      from: '"dignity & hope" <web.dignityhope@gmail.com>', // sender address
+      from: '"dignity & hope" <no-reply@dignityhope.org>', // sender address
       to: to.join(', '), // list of receivers
       subject: subject, // Subject line
       text: body, // plain text body
@@ -25,8 +35,8 @@ module.exports = function(to, subject, body, callback) {
   transporter.sendMail(mailOptions, function(error, info) {
       if (error) {
         console.log(error);
-        callback(false);
+        if (callback) callback(false);
       }
-      else callback(true);
+      else if (callback) callback(true);
   });
 }

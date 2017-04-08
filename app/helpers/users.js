@@ -4,7 +4,8 @@ var email = require('../helpers/email');
 var functions = require('../helpers/functions');
 var passwordHash = require('password-hash');
 var connection = require('./connection');
-var tokens = require('../helpers/tokens');
+var tokens = require('./tokens');
+var templates = require('./templates');
 
 var users = {};
 
@@ -66,13 +67,21 @@ users.exists = function (emailAddress, callback) {
   });
 };
 
-users.sendEmailConfirmation = function (userId, emailAddress, callback) {
+users.sendEmailConfirmation = function (userId, emailAddress, callback, signup) {
   var token = jwt.sign({
     tokenId: tokens.getId('EMAIL_CONFIRMATION', userId),
     emailToConfirm: emailAddress,
     userId: userId
   }, configs.key);
-  email([emailAddress], 'Verify your account', '<h2>Please verify your new dignity and hope account</h2><a href="' + configs.frontendUrl + 'confirmemail?emailConfirmToken=' + token + '">Verify your account</a>', function(response) {
+
+  var url = configs.frontendUrl + 'confirmemail?emailConfirmToken=' + token;
+  var emailContent = templates.newemail;
+  if (signup) emailContent = templates.signup;
+  emailContent = emailContent.split('@url@').join(url);
+  var subject = 'Verify your account';
+  if (signup) subject = 'Account created';
+
+  email([emailAddress], subject, emailContent, function(response) {
     callback(response);
   });
 };
@@ -88,7 +97,7 @@ users.doChanges = function (params, changes, reverifyEmail, callback) {
           users.sendEmailConfirmation(userId, changes.emailAddress, function(response) {
             if (response) callback({status: true});
             else callback({error: 'UPDATED_BUT_EMAIL_FAILED_TO_SEND'});
-          });
+          }, false);
         }
         else callback(response);
       }

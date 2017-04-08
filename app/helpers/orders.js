@@ -65,10 +65,11 @@ orders.complete = function (orderId, transactionId, callback) {
     if (requestId) saferpay.capture(transactionId, requestId, function(response) {
       if (response && response.OrderId == orderId) {
         connection.query('UPDATE orders SET status = "DONE" WHERE orderId = ?', [orderId], function(error, rows, fields) {
-          if (error) {
-            console.log(error);
+          if (error) console.log(error);
+          else {
+            entrepreneurs.sendOrderConfirmationEmail(orderId);
+            callback(true);
           }
-          else callback(true);
         });
       }
       else callback(false);

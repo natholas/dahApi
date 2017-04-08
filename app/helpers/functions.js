@@ -11,5 +11,10 @@ module.exports = {
     var size = 0, key;
     for (i in obj) size++;
     return size;
+  },
+  paddNumber: function(val, length) {
+    val = val.toString();
+    while (val.length < length) val = "0" + val;
+    return val;
   }
 };

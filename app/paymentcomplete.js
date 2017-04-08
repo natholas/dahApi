@@ -29,7 +29,7 @@ module.exports = function (req, callback) {
               }
               else {
                 entrepreneurs.checkIfCompleted(result.entrepreneurId);
-                callback(configs.frontendUrl + 'confirmation');
+                callback(configs.frontendUrl + 'confirmation/' + req.query.orderId);
               }
             });
           }
