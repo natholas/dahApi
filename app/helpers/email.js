@@ -15,7 +15,7 @@ let transporter = nodemailer.createTransport({
   secure: false, // upgrade later with STARTTLS
   auth: {
     user: 'no-reply@dignityhope.org',
-    pass: '623uiherguydcg123'
+    pass: configs.emailPassword
   }
 });
 
