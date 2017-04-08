@@ -26,9 +26,9 @@ orders.create = function (userId, entrepreneurId, amount, donationAmount, messag
   });
 };
 
-orders.init = function (orderId, amount, callback) {
+orders.init = function (orderId, amount, donationAmount, callback) {
   orders.request(orderId, 'INIT', null, function(requestId) {
-    if (requestId) saferpay.init(orderId, amount, requestId, function(response) {
+    if (requestId) saferpay.init(orderId, amount, donationAmount, requestId, function(response) {
       if (!response) {
         orders.cancel(orderId);
         callback(false);

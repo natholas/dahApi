@@ -57,7 +57,7 @@ ex.func = function(params, callback) {
           callback({error: 'COULDNT_CREATE_ORDER'});
           return;
         }
-        else orders.init(orderId, params.amount + params.donationAmount, function(response) {
+        else orders.init(orderId, params.amount, params.donationAmount, function(response) {
           if (response) callback(response);
           else callback({error: 'COULDNT_INIT_PAYMENT'});
         });

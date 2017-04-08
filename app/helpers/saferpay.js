@@ -3,7 +3,7 @@ var connection = require('./connection');
 var configs = require('../configs');
 var saferpay = {};
 
-saferpay.init = function (orderId, amount, requestId, callback) {
+saferpay.init = function (orderId, amount, donationAmount, requestId, callback) {
   var params = {
     "RequestHeader": {
       "SpecVersion": "1.3",
@@ -14,15 +14,18 @@ saferpay.init = function (orderId, amount, requestId, callback) {
     "TerminalId": "17809541",
     "Payment": {
       "Amount": {
-        "Value": amount * 100,
+        "Value": (amount + donationAmount) * 100,
         "CurrencyCode": "EUR"
       },
       "OrderId": orderId,
-      "Description": "Investment"
+      "Description": "<b>" + amount + "</b> eur investment<br><b>" + donationAmount + "</b> eur donation"
     },
     "ReturnUrls": {
       "Success": configs.backendUrl + 'paymentcomplete?requestId=' + requestId + '&orderId=' + orderId,
       "Fail": configs.backendUrl + 'paymentfailed?orderId=' + orderId
+    },
+    "Styling": {
+      "CssUrl": 'https://dignityhope.org/saferpay.css'
     }
   };
 
