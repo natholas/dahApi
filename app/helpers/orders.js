@@ -76,7 +76,7 @@ orders.complete = function (orderId, transactionId, callback) {
     });
     else callback(false);
   });
-}
+};
 
 orders.request = function (orderId, type, token, callback) {
   var requestId = functions.randomString(32);

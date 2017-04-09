@@ -29,7 +29,9 @@ var adminServices = {
 };
 
 var superAdminServices = {
-  updateuser: require('./super-admin-services/updateuser')
+  updateuser: require('./super-admin-services/updateuser'),
+  getallorders: require('./super-admin-services/getallorders')
+  // refundorder: require('./super-admin-services/refundorder')
 };
 
 var v = new Validator();
