@@ -19,7 +19,8 @@ var services = {
   getinvestormessages: require('./services/getinvestormessages'),
   getorders: require('./services/getorders'),
   statistics: require('./services/statistics'),
-  ordercomplete: require('./services/ordercomplete')
+  ordercomplete: require('./services/ordercomplete'),
+  addresslookup: require('./services/addresslookup')
 };
 
 var adminServices = {

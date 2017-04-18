@@ -19,6 +19,11 @@ ex.validation = {
       minLength: 5,
       maxLength: 64
     },
+    address: {
+      type: 'string',
+      minLength: 5,
+      maxLength: 120
+    },
     password: {
       type: 'string',
       minLength: 6,
@@ -29,14 +34,14 @@ ex.validation = {
       enum: ['PUBLIC', 'PRIVATE']
     }
   },
-  required: ['visitorToken', 'emailAddress', 'nickname', 'password', 'publicStatus']
+  required: ['visitorToken', 'emailAddress', 'nickname', 'password', 'publicStatus', 'address']
 };
 
 ex.func = function(params, callback) {
   users.exists(params.emailAddress, function(response) {
     if (response) callback({error: 'EMAILADDRESS_NOT_UNIQUE'});
     else {
-      users.create(params.emailAddress, params.nickname, params.password, params.publicStatus, function(userId) {
+      users.create(params.emailAddress, params.nickname, params.address, params.password, params.publicStatus, function(userId) {
         if (userId) {
           users.sendEmailConfirmation(userId, params.emailAddress, function(response) {
             callback(response);

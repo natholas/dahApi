@@ -26,6 +26,11 @@ ex.validation = {
       minLength: 5,
       maxLength: 20
     },
+    address: {
+      type: 'string',
+      minLength: 5,
+      maxLength: 120
+    },
     password: {
       type: 'string',
       minLength: 6,

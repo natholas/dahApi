@@ -9,9 +9,12 @@ var templates = require('./templates');
 
 var users = {};
 
-users.create = function(emailAddress, nickname, password, publicStatus, callback) {
+users.create = function(emailAddress, nickname, address, password, publicStatus, callback) {
   var hash = passwordHash.generate(password);
-  connection.query('INSERT INTO users (emailAddress, nickname, password, publicStatus, role) VALUES (?, ?, ?, ?, "USER")', [emailAddress, nickname, hash, publicStatus, 'USER'], function(error, rows, fields) {
+  connection.query(
+    'INSERT INTO users (emailAddress, nickname, address, password, publicStatus, role) VALUES (?,?,?,?,?,?)',
+    [emailAddress, nickname, address, hash, publicStatus, 'USER'],
+    function(error, rows, fields) {
     if (error) {
       console.log(error);
       callback(false);
@@ -38,6 +41,7 @@ users.login = function (emailAddress, password, callback) {
         emailAddress: user.emailAddress,
         emailVerified: user.emailVerified,
         nickname: user.nickname,
+        address: user.address,
         publicStatus: user.publicStatus
       }
     });
