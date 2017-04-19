@@ -19,7 +19,7 @@ ex.func = function(params, callback) {
 
   https.get({
     host: 'maps.googleapis.com',
-    path: '/maps/api/place/autocomplete/json?input=' + encodeURIComponent(params.searchString) + '&types=address&language=en&key=AIzaSyAkC-1g0vlEOWC8cejnhv2mRQEROkw6L4M'
+    path: '/maps/api/place/autocomplete/json?input=' + encodeURIComponent(params.searchString) + '&types=address&language=en&key=AIzaSyBzHLi1gTwe1COdBvxmQokAxrnNja_vN4E'
   }, function(res) {
     if (res.statusCode != '200') {
       callback({error: 'GOT_ERROR_STATUS_' + res.statusCode + '_FROM_GOOGLE'})
