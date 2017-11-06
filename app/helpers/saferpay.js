@@ -18,7 +18,7 @@ saferpay.init = function (orderId, amount, donationAmount, requestId, callback) 
         "CurrencyCode": "EUR"
       },
       "OrderId": orderId,
-      "Description": amount + "eur investment. " + donationAmount + " eur donation"
+      "Description": amount + " eur investment. " + donationAmount + " eur donation"
     },
     "ReturnUrls": {
       "Success": configs.backendUrl + 'paymentcomplete?requestId=' + requestId + '&orderId=' + orderId,
