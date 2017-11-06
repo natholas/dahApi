@@ -21,15 +21,6 @@ app.use(function (req, res, next) {
 
 if (__dirname == 'C:\\Users\\Nathan Felix\\Documents\\www\\dahApi\\app') {
   // Dev
-  // app.listen(3000, function () {
-  //   console.log('-------------------');
-  //   console.log();
-  //   console.log('DEVELOPMENT SERVER RUNNING.');
-  //   console.log('IF YOU ARE SEEING THIS IN PRODUCTION, YOU HAVE A PROBLEM.');
-  //   console.log();
-  //   console.log('-------------------');
-  // });
-
 
   // Force https
   app.use(function requireHTTPS(req, res, next) {
@@ -74,7 +65,7 @@ app.get('/', function(req, res) {
 });
 
 app.get('/images/*', function(req, res) {
-  res.sendFile(path.resolve('images/' + req.originalUrl.substring(8)));
+  res.sendFile(path.resolve(__dirname + '/../images/' + req.originalUrl.substring(8)));
 });
 
 app.get('/paymentcomplete*', function(req, res) {
