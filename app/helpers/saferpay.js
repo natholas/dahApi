@@ -11,14 +11,14 @@ saferpay.init = function (orderId, amount, donationAmount, requestId, callback) 
       "RequestId": requestId,
       "RetryIndicator": 0
     },
-    "TerminalId": "17809541",
+    "TerminalId": "17809558",
     "Payment": {
       "Amount": {
         "Value": (amount + donationAmount) * 100,
         "CurrencyCode": "EUR"
       },
       "OrderId": orderId,
-      "Description": "<b>" + amount + "</b> eur investment<br><b>" + donationAmount + "</b> eur donation"
+      "Description": amount + "eur investment. " + donationAmount + " eur donation"
     },
     "ReturnUrls": {
       "Success": configs.backendUrl + 'paymentcomplete?requestId=' + requestId + '&orderId=' + orderId,
@@ -29,14 +29,16 @@ saferpay.init = function (orderId, amount, donationAmount, requestId, callback) 
     }
   };
 
-  request.post({
+  var body = {
     url: configs.saferpayUrl + '/Payment/v1/PaymentPage/Initialize',
     headers: {
       'content-type': 'application/json',
       'Authorization': 'Basic ' + new Buffer(configs.auth.username + ':' + configs.auth.password).toString('base64')
     },
     body: JSON.stringify(params),
-  }, function (error, response, body) {
+  };
+
+  request.post(body, function (error, response, body) {
     try {
       body = JSON.parse(body);
       if (response.statusCode == 200) callback(body);

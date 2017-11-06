@@ -19,16 +19,35 @@ app.use(function (req, res, next) {
   next();
 });
 
-if (__dirname == 'C:\\Users\\Nathan\\Documents\\dah\\api\\app') {
+if (__dirname == 'C:\\Users\\Nathan Felix\\Documents\\www\\dahApi\\app') {
   // Dev
-  app.listen(3000, function () {
-    console.log('-------------------');
-    console.log();
-    console.log('DEVELOPMENT SERVER RUNNING.');
-    console.log('IF YOU ARE SEEING THIS IN PRODUCTION, YOU HAVE A PROBLEM.');
-    console.log();
-    console.log('-------------------');
+  // app.listen(3000, function () {
+  //   console.log('-------------------');
+  //   console.log();
+  //   console.log('DEVELOPMENT SERVER RUNNING.');
+  //   console.log('IF YOU ARE SEEING THIS IN PRODUCTION, YOU HAVE A PROBLEM.');
+  //   console.log();
+  //   console.log('-------------------');
+  // });
+
+
+  // Force https
+  app.use(function requireHTTPS(req, res, next) {
+    if (!req.secure) return res.redirect('https://' + req.get('host') + req.originalUrl);
+    next();
   });
+
+  var ports = [80, 3000];
+
+  var server = https.createServer({
+    key: fs.readFileSync('/etc/letsencrypt/live/dignity-hope.org/privkey.pem'),
+    cert: fs.readFileSync('/etc/letsencrypt/live/dignity-hope.org/fullchain.pem')
+  }, app);
+
+  server.listen(ports[1]);
+  app.listen(ports[0]);
+
+
 }
 else {
   // Production
