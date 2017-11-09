@@ -6,8 +6,8 @@ var functions = require('./functions.js');
 var entrepreneurs = {};
 
 entrepreneurs.getAllByStatus = function (status, callback) {
-  var sql = 'SELECT * FROM entrepreneur WHERE status = ?';
-  if (status == 'ALL') sql = 'SELECT * FROM entrepreneur';
+  var sql = 'SELECT * FROM entrepreneur WHERE status = ? AND type = "MAIN"';
+  if (status == 'ALL') sql = 'SELECT * FROM entrepreneur AND type = "MAIN"';
   connection.query(sql, [status], function(error, rows, fields) {
     if (error) {
       console.log(error);
@@ -17,7 +17,16 @@ entrepreneurs.getAllByStatus = function (status, callback) {
 };
 
 entrepreneurs.getById = function (id, callback) {
-  connection.query('SELECT * FROM entrepreneur WHERE entrepreneurId = ?', [id], function(error, rows, fields) {
+  connection.query('SELECT * FROM entrepreneur WHERE entrepreneurId = ?', [id], function (error, rows, fields) {
+    if (error) {
+      console.log(error);
+      callback(false);
+    } else callback(rows);
+  });
+};
+
+entrepreneurs.getChildren = function (parentId, callback) {
+  connection.query('SELECT status, entrepreneurId FROM entrepreneurs WHERE parentId = ?', [parentId], function (error, rows, fields) {
     if (error) {
       console.log(error);
       callback(false);

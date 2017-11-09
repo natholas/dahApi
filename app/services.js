@@ -13,6 +13,7 @@ var services = {
   updateprofile: require('./services/updateprofile'),
   getentrepreneurs: require('./services/getentrepreneurs'),
   getentrepreneur: require('./services/getentrepreneur'),
+  getchildren: require('./services/getchildren'),
   getcountrydetails: require('./services/getcountrydetails'),
   getteamdetails: require('./services/getteamdetails'),
   getinvestors: require('./services/getinvestors'),
